@@ -1,0 +1,5 @@
+# gh-watch bundle patch: inserts this plugin into a profile's layer stack.
+- insert:
+    - id: gh-watch
+      name: 'gh-watch'
+      config: {}
