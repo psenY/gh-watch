@@ -1,6 +1,6 @@
 {
   "name": "gh-watch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "GitHub PR/issue 变更监视插件：检测变更并自动拉起对话通知 AI（多 AI 独立配置，插件自身不审查、不回帖）",
   "type": "module",
   "main": "lib/index.js",

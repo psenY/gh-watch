@@ -137,6 +137,13 @@ console.log('smoke ok', { name, inject });
 
 - `$DSH_HOME/gh-watch/state.json` —— watchers 配置与每仓库游标快照。
 - `$DSH_HOME/gh-watch/undelivered.log` —— 通知派发失败时记录的未送达文本。
+- `$DSH_HOME/gh-watch/diag.log` —— 基线异常诊断（v0.1.1 起）：陈旧条目被判为「新建」、或持久化时从磁盘补回丢失的 key 时留痕。
+- `$DSH_HOME/gh-watch/state.json.bak-YYYYMMDD` —— 每日一份状态备份（v0.1.1 起），便于事后 diff 基线改动。
+
+## 变更记录
+
+- **v0.1.1**：修复「已关闭的历史条目被重新报为『新建』」这一类基线回退问题——写盘前与磁盘现状做 cursor **并集**（内存缺失而磁盘存在的 key 一律补回，冲突以内存为准），从机制上杜绝「持有旧快照的写入者整体覆盖 state.json 时抹掉他人新增 key」；新增 `diag.log` 诊断与每日状态备份。同版并入此前仅在本地运行版存在的两处补丁：批量合并通知（`buildBatchNotification`）与**取消 cursor 窗口淘汰**（消除条目在 50 条窗口边界反复进出导致的重复推送）。
+- **v0.1.0**：首个发布版（轮询 + 游标 diff + 通知派发 + 会话级配置）。
 
 ## License
 
