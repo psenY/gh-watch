@@ -21,7 +21,8 @@
   },
   "scripts": {
     "prepare": "node -e \"process.exit(0)\"",
-    "test": "node --input-type=module -e \"import{name,inject,apply}from'./lib/index.js';if(name!=='gh-watch')throw Error('name');if(!Array.isArray(inject))throw Error('inject');if(typeof apply!=='function')throw Error('apply');console.log('smoke ok',{name,inject,hasApply:typeof apply==='function'})\""
+    "test": "node --test test/*.test.mjs",
+    "test:smoke": "node --input-type=module -e \"import{name,inject,apply}from'./lib/index.js';if(name!=='gh-watch')throw Error('name');if(!Array.isArray(inject))throw Error('inject');if(typeof apply!=='function')throw Error('apply');console.log('smoke ok')\""
   },
   "dependencies": {
     "@deepseek-ai/dsh-tools": "^0.1.1-rc.2",
