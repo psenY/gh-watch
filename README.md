@@ -148,3 +148,14 @@ console.log('smoke ok', { name, inject });
 ## License
 
 [MIT](./LICENSE)
+### 通知确认（ack）与超时重推（2026-09-22 新增）
+
+每条注入对话的通知都带一个 **`本条 id`**（形如 `gw-xxxxx-1`），并在末尾提示：
+
+> 【本条 id: gw-xxxxx-1】处理完请调用 `gh_watch_ack({ id: "gw-xxxxx-1" })` 让插件知道这条已被处理；
+> 若 15 分钟内没有确认，插件会再次提醒（最多 2 次）。
+
+- **为什么**：一次轮询可能合并多条变更，AI 有时会漏处理其中一部分，而插件无法感知。
+- **行为**：未确认的通知会在 `ackTimeoutMin`（默认 15 分钟）后被**再次注入**（前缀「【再次提醒 · 第 N 次】」），最多 `ackMaxRetries`（默认 2 次），之后放弃并在日志留痕；**已确认的立即从待办里移除**。
+- **配置**：`gh_watch_configure({ repos: [...], ackTimeoutMin: 15, ackMaxRetries: 2 })`；
+- **查看**：`gh_watch_status` 会显示「**待确认通知: N 条**」。
